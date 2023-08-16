@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
+
 function RegisterPage() {
 
     const {register, 
@@ -20,6 +21,8 @@ function RegisterPage() {
   signup(values)
  })
   return (
+
+    <div className="flex h-[calc(100vh-100px)] items-center justify-center">
     <div className='bg-zinc-800 ma-10 max-w-md p-5 rounded-md'>
 
       {
@@ -50,6 +53,7 @@ function RegisterPage() {
             <button type="submit" className="bg-blue-500 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded ">Register</button>
         </form>   
 
+    </div>
     </div>
   )
 }
