@@ -1,4 +1,4 @@
-import { createContext, useState,useContext } from "react";
+import { createContext, useState,useContext, useEffect } from "react";
 
 import { loginRequest, registerRequest } from "../api/auth";
 import { date } from "zod";
@@ -38,10 +38,23 @@ export const AuthProvider = ({ children }) => {
             setIsAutheticated(true);
             setUser(res.data);
         } catch(error){
-            console.log(error)
+            console.log(error);
+            if(Array.isArray(error.response.data)){
+            setErrors(error.response.data)
         }
+        setErrors([error.response.data.message])
+       
+        }
+    }
 
-}
+    useEffect(() => {
+        if(errors.length > 0) {
+            const timer = setTimeout(() => {
+                setErrors([]);
+            }, 3000);
+            return () => clearTimeout(timer)
+        }
+    }, [errors]) 
 
     return(
         <AuthContext.Provider value={{
