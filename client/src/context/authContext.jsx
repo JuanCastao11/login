@@ -1,7 +1,6 @@
 import { createContext, useState,useContext, useEffect } from "react";
-
-import { loginRequest, registerRequest } from "../api/auth";
-import { date } from "zod";
+import { loginRequest, registerRequest,verifyTokenRequest } from "../api/auth";
+import Cookies from "js-cookie";
 
 export const  AuthContext = createContext();
 
@@ -43,18 +42,45 @@ export const AuthProvider = ({ children }) => {
             setErrors(error.response.data)
         }
         setErrors([error.response.data.message])
-       
         }
+        
     }
 
     useEffect(() => {
         if(errors.length > 0) {
             const timer = setTimeout(() => {
                 setErrors([]);
-            }, 3000);
+            }, 2000);
             return () => clearTimeout(timer)
         }
     }, [errors]) 
+
+    useEffect(() => {
+        async function checkLogin(){
+         const cookies = Cookies.get();
+ 
+         if(!cookies.token){
+             setIsAutheticated(false)
+             return setUser(null)
+         }
+ 
+         try {
+             const res = await verifyTokenRequest(cookies.token)
+             console.log(res)
+             if(!res.data){
+                 setIsAutheticated(false)
+             }
+             setIsAutheticated(true);
+             setUser(res.data);
+         } catch (error) {
+             setIsAutheticated(false);
+             setUser(null)
+         }
+        }
+        checkLogin();
+     },[])
+
+
 
     return(
         <AuthContext.Provider value={{
