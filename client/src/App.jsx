@@ -6,29 +6,30 @@ import TaskPage from './pages/TaskPage'
 import TaskFormPage from './pages/TaskFormPage'
 import ProfilePage from './pages/ProfilePage'
 import Homepages from './pages/Homepages'
-import protectedRoute from './protectedRoute'
+import ProtectedRoute from './protectedRoute'
 
 function App() {
 return(
 
   <>
   <AuthProvider>
+ 
   <BrowserRouter>
   <Routes>
     <Route path='/' element={<Homepages/>} />
     <Route path='/login' element={<LoginPage/>} />
     <Route path='/register' element={<RegisterPage/>} />
 
-    <Route element={ <protectedRoute/> }> 
+    <Route element={ <ProtectedRoute/> }> 
       <Route path='/tasks' element={ <TaskPage/>} />
       <Route path='/add-task' element={<TaskFormPage/>} />
       <Route path='/tasks/:id' element={<TaskFormPage/>} />
       <Route path='/profile' element={<ProfilePage/>} />
     </Route>
-
   </Routes>
 </BrowserRouter>
- </AuthProvider>
+
+</AuthProvider>
   
   </>
 )
